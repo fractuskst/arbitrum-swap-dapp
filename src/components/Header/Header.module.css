@@ -1,0 +1,30 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  min-height: 96px;
+}
+
+.logo {
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.logo:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.button {
+  width: 234px;
+  height: 63px;
+  border-radius: 10px;
+  border: none;
+  transition: transform 0.1s ease;
+}
+
+button:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}

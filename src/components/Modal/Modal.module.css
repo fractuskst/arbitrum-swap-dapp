@@ -1,0 +1,53 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  background-color: #feefcd;
+  padding: 32px 24px;
+  border-radius: 40px;
+  width: 412px;
+  border: 4px solid #362a32;
+  z-index: 1001;
+  filter: none !important;
+  gap: 16px;
+}
+
+.assetList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modalAssetBtn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: inherit;
+  color: #000;
+  font-size: 28px;
+  text-align: left;
+  padding: 31px 16px;
+  border: 2px solid #362a32;
+  border-radius: 20px;
+}
+
+.closeModalButton {
+  border-radius: 16px;
+  padding: 20px 24px;
+}
+
+.coinIcon {
+  width: 36px;
+  height: 36px;
+}

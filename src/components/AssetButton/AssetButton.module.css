@@ -1,0 +1,36 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.selectBtn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 2px solid #362a32;
+  border-radius: 20px;
+  background-color: inherit;
+  font-size: 22px;
+  font-weight: 500;
+  color: #362a32;
+  cursor: pointer;
+  padding: 31px 16px;
+  text-align: left;
+  height: 88px;
+}
+
+.label {
+  font-size: 22px;
+  font-weight: 700;
+  height: 26px;
+}
+
+.assetName {
+  font-size: 28px;
+}
+
+.coinIcon {
+  width: 36px;
+  height: 36px;
+}
