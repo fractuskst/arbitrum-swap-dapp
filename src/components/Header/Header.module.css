@@ -17,14 +17,29 @@
 }
 
 .button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   width: 234px;
   height: 63px;
   border-radius: 10px;
   border: none;
   transition: transform 0.1s ease;
+  background-color: #773900;
+  color: #feefcd;
 }
 
-button:active {
-  transform: scale(0.98);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+.button.connected {
+  font-family: Arial, sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+}
+
+.walletIcon {
+  width: 24px;
+}
+
+.arrowDownIcon {
+  width: 16px;
 }

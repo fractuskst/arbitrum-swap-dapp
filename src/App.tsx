@@ -8,7 +8,9 @@ const App = () => {
     <div className={styles.container}>
       <Header />
       <Form />
-      <img src={ArbitrumLogo} alt="Arbitrum logo" className={styles.logo} />
+      <a className={styles.logo} href="https://arbitrum.io" target="_blank" rel="noopener noreferrer">
+        <img src={ArbitrumLogo} alt="Arbitrum logo" />
+      </a>
     </div>
   );
 };

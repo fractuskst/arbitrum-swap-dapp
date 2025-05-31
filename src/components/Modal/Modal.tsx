@@ -4,6 +4,7 @@ import styles from './Modal.module.css';
 import usdtIcon from '@/assets/icons/usdt.png';
 import usdcIcon from '@/assets/icons/usdc.png';
 import ethIcon from '@/assets/icons/eth.png';
+import AssetButton from '../AssetButton/AssetButton';
 
 type Props = {
   onSelectAsset: (asset: Asset, isFromAsset: boolean) => void;
@@ -23,10 +24,13 @@ const Modal: React.FC<Props> = ({ onSelectAsset, setShowModal, isFromAsset }) =>
       <div className={styles.modal}>
         <div className={styles.assetList}>
           {assets.map((asset) => (
-            <button key={asset.id} className={styles.modalAssetBtn} onClick={() => onSelectAsset(asset, isFromAsset)}>
-              {asset.name}
-              <img src={asset.icon} alt="coinIcon" className={styles.coinIcon} />
-            </button>
+            <AssetButton
+              key={asset.id}
+              asset={asset}
+              isModal={true}
+              onClick={() => onSelectAsset(asset, isFromAsset)}
+              style={{ height: '96px' }}
+            />
           ))}
         </div>
         <button className={styles.closeModalButton} onClick={() => setShowModal(false)}>

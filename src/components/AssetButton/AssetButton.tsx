@@ -1,17 +1,17 @@
 import type { Asset } from '../../types';
-import arrowDownIcon from '@/assets/icons/arrow-down.svg';
+import ArrowDownIcon from '@/assets/icons/arrow-down.svg?react';
 import styles from './AssetButton.module.css';
+import cn from 'classnames';
 
 type Props = {
   asset?: Asset | null;
-  label?: string;
+  isModal?: boolean;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-const AssetButton: React.FC<Props> = ({ asset, label, ...rest }) => {
+const AssetButton: React.FC<Props> = ({ asset, isModal, ...rest }) => {
   return (
     <div className={styles.container}>
-      {label && <label className={styles.label}>{label}</label>}
-      <button className={styles.selectBtn} {...rest}>
+      <button className={cn(styles.selectBtn, rest.className)} {...rest}>
         {asset ? (
           <>
             <span className={styles.assetName}>{asset.name}</span>
@@ -20,7 +20,9 @@ const AssetButton: React.FC<Props> = ({ asset, label, ...rest }) => {
         ) : (
           'Select asset'
         )}
-        <img src={arrowDownIcon} alt="arrow-down-icon" className={styles.coinIcon} />
+        {!isModal && (
+          <ArrowDownIcon stroke="#362A32" style={{ width: asset ? '16px' : '36px' }} className={styles.arrowDownIcon} />
+        )}
       </button>
     </div>
   );

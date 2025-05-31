@@ -9,3 +9,38 @@
   padding: 32px 24px;
   gap: 32px;
 }
+
+.label {
+  font-size: 22px;
+  font-weight: 700;
+  height: 26px;
+}
+
+.inputContainer {
+  position: relative;
+  width: 100%;
+}
+
+.smallStyleSelectBtn {
+  position: absolute;
+  display: flex;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  right: 16px;
+  height: 44px;
+  padding: 4px 12px;
+  border: none;
+  border-radius: 10px;
+  background-color: #feefcd;
+  gap: 8px;
+}
+
+.swapButton {
+  height: 71px;
+  border-radius: 16px;
+  padding: 20px 24px;
+  background-color: #773900;
+  color: #feefcd;
+  border: none;
+}
