@@ -1,5 +1,9 @@
 export type Asset = {
-  id: string;
-  name: string;
+  symbol: string;
+  address: string;
+  decimals: number;
+  chainId: number;
   icon?: string;
 };
+
+export type SourceType = 'From' | 'To';

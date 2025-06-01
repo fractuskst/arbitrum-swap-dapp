@@ -1,3 +1,4 @@
+import type { InputHTMLAttributes } from 'react';
 import styles from './Input.module.css';
 
 const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -6,8 +7,8 @@ const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
   }
 };
 
-const Input = () => {
-  return <input type="number" className={styles.input} onKeyDown={handleKeyDown} />;
+const Input: React.FC<InputHTMLAttributes<HTMLInputElement>> = (props) => {
+  return <input placeholder="0" className={styles.input} type="number" onKeyDown={handleKeyDown} {...props} />;
 };
 
 export default Input;

@@ -2,6 +2,8 @@ import '@rainbow-me/rainbowkit/styles.css';
 import './index.css';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { StoreContext } from './store/StoreContext.ts';
+import { store } from './store/store.ts';
 import App from './App.tsx';
 
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
@@ -16,7 +18,9 @@ createRoot(document.getElementById('root')!).render(
     <QueryClientProvider client={queryClient}>
       <RainbowKitProvider modalSize="compact">
         <StrictMode>
-          <App />
+          <StoreContext.Provider value={store}>
+            <App />
+          </StoreContext.Provider>
         </StrictMode>
       </RainbowKitProvider>
     </QueryClientProvider>
