@@ -1,8 +1,9 @@
 import { getDefaultConfig } from '@rainbow-me/rainbowkit';
 import { arbitrum } from 'wagmi/chains';
+import { PROJECT_ID } from './constants';
 
 export const config = getDefaultConfig({
   appName: 'Pirate Bay',
-  projectId: '05b93c29bfbad9e2845d0319c6008dda',
+  projectId: PROJECT_ID,
   chains: [arbitrum],
 });

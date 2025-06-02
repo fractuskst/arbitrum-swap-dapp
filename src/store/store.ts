@@ -2,6 +2,7 @@ import { makeAutoObservable } from 'mobx';
 import type { Asset, SourceType } from '../types';
 
 class Store {
+  accountAddress = '';
   fromAsset: Asset | null = null;
   toAsset: Asset | null = null;
   showFromModal = false;
@@ -10,10 +11,16 @@ class Store {
   toAmount: string = '';
   inputSource: SourceType | null = null;
   isApproved = false;
+  errorMessage: string = '';
+  isLoading = false;
 
   constructor() {
     makeAutoObservable(this);
   }
+
+  setAccountAddress = (address: string) => {
+    this.accountAddress = address;
+  };
 
   setFromAsset = (asset: Asset | null) => {
     this.fromAsset = asset;
@@ -41,8 +48,16 @@ class Store {
     this.inputSource = 'To';
   };
 
-  setApproved = (value: boolean) => {
+  setIsApproved = (value: boolean) => {
     this.isApproved = value;
+  };
+
+  setErrorMessage = (message: string) => {
+    this.errorMessage = message;
+  };
+
+  setIsLoading = (value: boolean) => {
+    this.isLoading = value;
   };
 }
 

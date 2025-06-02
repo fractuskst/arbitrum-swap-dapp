@@ -1,13 +1,4 @@
-import { Squid } from '@0xsquid/sdk';
-
-const integratorId = 'pirate-bay-c8ace413-c096-4db5-8bc8-0ea325b74d54';
-
-const squid = new Squid({
-  baseUrl: 'https://v2.api.squidrouter.com',
-  integratorId: integratorId,
-});
-
-await squid.init();
+import { squid } from './squidClient';
 
 type Props = {
   fromChainId: number;
@@ -15,8 +6,8 @@ type Props = {
   toChainId: number;
   toTokenAddress: string;
   amount: string;
-  fromAddress: `0x${string}` | undefined;
-  toAddress: `0x${string}` | undefined;
+  fromAddress: string | undefined;
+  toAddress: string | undefined;
 };
 
 export const getSwapQuote = async ({

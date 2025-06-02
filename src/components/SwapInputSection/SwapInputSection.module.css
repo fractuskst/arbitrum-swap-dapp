@@ -23,3 +23,9 @@
   background-color: #feefcd;
   gap: 8px;
 }
+
+.error {
+  color: #c00000;
+  font-weight: 400;
+  margin-top: -20px;
+}

@@ -4,9 +4,16 @@ import styles from './Header.module.css';
 import logo from '@/assets/images/Logo.svg';
 import ArrowDownIcon from '@/assets/icons/arrow-down.svg?react';
 import cn from 'classnames';
+import { useStore } from '@/store/StoreContext';
+import { useEffect } from 'react';
 
 const Header = () => {
-  const { connector } = useAccount();
+  const { address, connector } = useAccount();
+  const { setAccountAddress } = useStore();
+
+  useEffect(() => {
+    setAccountAddress(address ?? '');
+  }, [address, setAccountAddress]);
 
   return (
     <header className={styles.header}>

@@ -4,17 +4,15 @@ import { observer } from 'mobx-react-lite';
 import { useStore } from '@/store/StoreContext';
 
 import AssetButton from '../AssetButton/AssetButton';
-import { ASSETS } from '@/constants/assets';
+import { ASSETS } from '@/constants';
 
 type Props = {
   SourceType: SourceType;
 };
 
 const Modal: React.FC<Props> = observer(({ SourceType }) => {
-  const store = useStore();
-
   const { fromAsset, toAsset, setFromAsset, setToAsset, setShowFromModal, setShowToModal, setFromAmount, setToAmount } =
-    store;
+    useStore();
 
   const handleSelectAsset = (asset: Asset, type: SourceType) => {
     if (type === 'From') {

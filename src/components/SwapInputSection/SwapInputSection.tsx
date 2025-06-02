@@ -11,9 +11,19 @@ type Props = {
   amount: string;
   onAmountChange: (value: string) => void;
   showModal: boolean;
+  errorMessage: string;
+  inputSource: SourceType | null;
 };
 
-const SwapInputSection: React.FC<Props> = ({ label, asset, amount, onAmountChange, showModal }) => {
+const SwapInputSection: React.FC<Props> = ({
+  label,
+  asset,
+  amount,
+  onAmountChange,
+  showModal,
+  errorMessage,
+  inputSource,
+}) => {
   return (
     <>
       <label className={styles.label}>{label}</label>
@@ -26,6 +36,7 @@ const SwapInputSection: React.FC<Props> = ({ label, asset, amount, onAmountChang
         <AssetButton SourceType={label} />
       )}
       {showModal && <Modal SourceType={label} />}
+      {errorMessage && label === inputSource && <span className={styles.error}>{errorMessage}</span>}
     </>
   );
 };

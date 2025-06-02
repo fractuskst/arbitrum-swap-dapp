@@ -5,20 +5,30 @@ import SwapInputSection from '../SwapInputSection/SwapInputSection';
 import { useDebouncedQuote } from '@/utils/useDebouncedQuote';
 
 const Form = observer(() => {
-  const store = useStore();
-  const { fromAsset, toAsset, fromAmount, toAmount, showFromModal, showToModal, setFromAmount, setToAmount, isApproved } =
-    store;
+  const {
+    fromAsset,
+    toAsset,
+    fromAmount,
+    toAmount,
+    showFromModal,
+    showToModal,
+    setFromAmount,
+    setToAmount,
+    isApproved,
+    errorMessage,
+    inputSource,
+  } = useStore();
 
   const debouncedQuote = useDebouncedQuote();
 
-  const handleFromAmountChange = (value: string) => {
-    setFromAmount(value);
-    debouncedQuote('From', value);
+  const handleFromAmountChange = (amount: string) => {
+    setFromAmount(amount);
+    debouncedQuote('From', amount);
   };
 
-  const handleToAmountChange = (value: string) => {
-    setToAmount(value);
-    debouncedQuote('To', value);
+  const handleToAmountChange = (amount: string) => {
+    setToAmount(amount);
+    debouncedQuote('To', amount);
   };
 
   return (
@@ -29,6 +39,8 @@ const Form = observer(() => {
         amount={fromAmount}
         onAmountChange={handleFromAmountChange}
         showModal={showFromModal}
+        errorMessage={errorMessage}
+        inputSource={inputSource}
       />
 
       <SwapInputSection
@@ -37,9 +49,13 @@ const Form = observer(() => {
         amount={toAmount}
         onAmountChange={handleToAmountChange}
         showModal={showToModal}
+        errorMessage={errorMessage}
+        inputSource={inputSource}
       />
 
-      {fromAsset && toAsset && <button className={styles.swapButton}>{isApproved ? 'Swap' : 'Approve'}</button>}
+      {fromAsset && toAsset && !errorMessage && (
+        <button className={styles.swapButton}>{isApproved ? 'Swap' : 'Approve'}</button>
+      )}
     </div>
   );
 });

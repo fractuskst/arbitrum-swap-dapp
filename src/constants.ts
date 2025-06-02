@@ -26,3 +26,7 @@ export const ASSETS: Asset[] = [
     icon: ethIcon,
   },
 ];
+
+export const PROJECT_ID = '05b93c29bfbad9e2845d0319c6008dda';
+
+export const INTEGRATOR_ID = 'pirate-bay-c8ace413-c096-4db5-8bc8-0ea325b74d54';

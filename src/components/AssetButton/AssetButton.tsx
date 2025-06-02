@@ -12,13 +12,13 @@ type Props = {
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 const AssetButton: React.FC<Props> = observer(({ asset, SourceType, hideArrow, ...rest }) => {
-  const store = useStore();
+  const { setShowFromModal, setShowToModal } = useStore();
 
   const handleShowModal = (type: SourceType) => {
     if (type === 'From') {
-      store.setShowFromModal(true);
+      setShowFromModal(true);
     } else {
-      store.setShowToModal(true);
+      setShowToModal(true);
     }
   };
 

@@ -4,19 +4,21 @@ import { getSwapQuote } from './getSwapQuote';
 import { useStore } from '@/store/StoreContext';
 import type { SourceType } from '@/types';
 import { parseUnits } from 'viem';
-import { useAccount } from 'wagmi';
 
 export const useDebouncedQuote = () => {
-  const store = useStore();
-  const account = useAccount();
-
-  const { fromAsset, toAsset, setToAmount, setFromAmount } = store;
+  const { accountAddress, fromAsset, toAsset, setToAmount, setFromAmount, setErrorMessage } = useStore();
 
   const fetchQuote = useCallback(
     async (source: SourceType, amount: string) => {
+      setErrorMessage('');
       if (!fromAsset || !toAsset) return;
 
       const isFrom = source === 'From';
+
+      if (!accountAddress) {
+        setErrorMessage('Please connect your wallet before entering the amount.');
+        return;
+      }
 
       if (!amount || isNaN(Number(amount)) || Number(amount) === 0) {
         if (isFrom) {
@@ -35,8 +37,8 @@ export const useDebouncedQuote = () => {
           fromTokenAddress: isFrom ? fromAsset.address : toAsset.address,
           toChainId: isFrom ? toAsset.chainId : fromAsset.chainId,
           toTokenAddress: isFrom ? toAsset.address : fromAsset.address,
-          fromAddress: account.address,
-          toAddress: account.address,
+          fromAddress: accountAddress,
+          toAddress: accountAddress,
           amount: amountInUnits,
         });
 
@@ -51,11 +53,13 @@ export const useDebouncedQuote = () => {
         }
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
-        console.error(error?.response?.data?.message || error);
+        const message = error?.response?.data?.message;
+        setErrorMessage(message || error.message || 'Unexpected error while fetching quote.');
+        console.error(error.message);
       }
     },
-    [fromAsset, toAsset, setToAmount, setFromAmount, account.address],
+    [fromAsset, toAsset, setToAmount, setFromAmount, setErrorMessage, accountAddress],
   );
 
-  return useMemo(() => debounce(fetchQuote, 700), [fetchQuote]);
+  return useMemo(() => debounce(fetchQuote, 1000), [fetchQuote]);
 };
