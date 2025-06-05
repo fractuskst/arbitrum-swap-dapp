@@ -2,10 +2,14 @@ import styles from './Form.module.css';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '@/store/StoreContext';
 import SwapInputSection from '../SwapInputSection/SwapInputSection';
-import { useDebouncedQuote } from '@/utils/useDebouncedQuote';
+import { useSwapQuoteFetcher } from '@/utils/useSwapQuoteFetcher';
+import { useBalanceCheck } from '@/utils/useBalanceCheck';
+import { useAllowanceCheck } from '@/utils/useAllowanceCheck';
 
 const Form = observer(() => {
   const {
+    accountAddress,
+    spenderAddress,
     fromAsset,
     toAsset,
     fromAmount,
@@ -15,20 +19,80 @@ const Form = observer(() => {
     setFromAmount,
     setToAmount,
     isApproved,
+    setIsApproved,
     errorMessage,
+    setErrorMessage,
     inputSource,
+    setInputSource,
   } = useStore();
 
-  const debouncedQuote = useDebouncedQuote();
+  const checkAllowance = useAllowanceCheck();
+  const { checkBalance } = useBalanceCheck();
+  const getDebouncedQuote = useSwapQuoteFetcher();
+
+  const handleActionClick = async () => {
+    if (!accountAddress || !spenderAddress || !fromAsset || !fromAmount) return;
+    if (fromAsset.address.toLowerCase() === '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') {
+      setIsApproved(true);
+      return;
+    }
+    if (!isApproved) {
+      const hasAllowance = await checkAllowance(
+        accountAddress as `0x${string}`,
+        spenderAddress as `0x${string}`,
+        fromAsset.address as `0x${string}`,
+        fromAmount,
+        fromAsset.decimals,
+      );
+
+      setIsApproved(hasAllowance);
+    }
+
+    const hasAllowance = await checkAllowance(
+      accountAddress as `0x${string}`,
+      spenderAddress as `0x${string}`,
+      fromAsset.address as `0x${string}`,
+      fromAmount,
+      fromAsset.decimals,
+    );
+
+    setIsApproved(hasAllowance);
+  };
 
   const handleFromAmountChange = (amount: string) => {
+    setErrorMessage('');
     setFromAmount(amount);
-    debouncedQuote('From', amount);
+    setInputSource('From');
+
+    if (!amount || Number(amount) === 0) {
+      setToAmount('');
+      return;
+    }
+
+    getDebouncedQuote('From', amount);
+
+    if (accountAddress && !checkBalance(amount)) {
+      setErrorMessage('Insufficient balance');
+      return;
+    }
   };
 
   const handleToAmountChange = (amount: string) => {
+    setErrorMessage('');
     setToAmount(amount);
-    debouncedQuote('To', amount);
+    setInputSource('To');
+
+    if (!amount || Number(amount) === 0) {
+      setFromAmount('');
+      return;
+    }
+
+    getDebouncedQuote('To', amount);
+
+    if (accountAddress && fromAmount && !checkBalance(fromAmount)) {
+      setErrorMessage('Insufficient balance');
+      return;
+    }
   };
 
   return (
@@ -53,8 +117,10 @@ const Form = observer(() => {
         inputSource={inputSource}
       />
 
-      {fromAsset && toAsset && !errorMessage && (
-        <button className={styles.swapButton}>{isApproved ? 'Swap' : 'Approve'}</button>
+      {fromAmount && toAmount && !errorMessage && (
+        <button onClick={handleActionClick} className={styles.swapButton}>
+          {isApproved ? 'Swap' : 'Approve'}
+        </button>
       )}
     </div>
   );

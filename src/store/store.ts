@@ -1,25 +1,39 @@
 import { makeAutoObservable } from 'mobx';
 import type { Asset, SourceType } from '../types';
+import { squid } from '@/configs';
 
 class Store {
-  accountAddress = '';
+  accountAddress: string | null = null;
+  spenderAddress: string | null = null;
+  inputSource: SourceType | null = null;
   fromAsset: Asset | null = null;
   toAsset: Asset | null = null;
   showFromModal = false;
   showToModal = false;
-  fromAmount: string = '';
-  toAmount: string = '';
-  inputSource: SourceType | null = null;
+  fromAmount = '';
+  toAmount = '';
   isApproved = false;
-  errorMessage: string = '';
-  isLoading = false;
+  errorMessage = '';
 
   constructor() {
     makeAutoObservable(this);
+    this.initSquid();
+  }
+
+  async initSquid() {
+    try {
+      await squid.init();
+    } catch (e) {
+      console.error('Squid init error:', e);
+    }
   }
 
   setAccountAddress = (address: string) => {
     this.accountAddress = address;
+  };
+
+  setSpenderAddress = (address: string) => {
+    this.spenderAddress = address;
   };
 
   setFromAsset = (asset: Asset | null) => {
@@ -40,12 +54,10 @@ class Store {
 
   setFromAmount = (value: string) => {
     this.fromAmount = value;
-    this.inputSource = 'From';
   };
 
   setToAmount = (value: string) => {
     this.toAmount = value;
-    this.inputSource = 'To';
   };
 
   setIsApproved = (value: boolean) => {
@@ -56,8 +68,8 @@ class Store {
     this.errorMessage = message;
   };
 
-  setIsLoading = (value: boolean) => {
-    this.isLoading = value;
+  setInputSource = (value: SourceType) => {
+    this.inputSource = value;
   };
 }
 

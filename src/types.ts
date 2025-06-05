@@ -2,7 +2,7 @@ export type Asset = {
   symbol: string;
   address: string;
   decimals: number;
-  chainId: number;
+  chainId: string;
   icon?: string;
 };
 

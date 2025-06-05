@@ -9,7 +9,7 @@ import App from './App.tsx';
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { WagmiProvider } from 'wagmi';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
-import { config } from './wagmi.ts';
+import { config } from './configs.ts';
 
 const queryClient = new QueryClient();
 
