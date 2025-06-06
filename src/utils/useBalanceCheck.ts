@@ -7,7 +7,7 @@ export const useBalanceCheck = () => {
 
   const { data: fromAssetBalance } = useBalance({
     address: accountAddress as `0x${string}`,
-    token: fromAsset?.symbol === 'ETH' ? undefined : (fromAsset?.address as `0x${string}`),
+    token: fromAsset?.isNative ? undefined : (fromAsset?.address as `0x${string}`),
     chainId: Number(fromAsset?.chainId),
   });
 
@@ -17,5 +17,5 @@ export const useBalanceCheck = () => {
     return BigInt(amountInUnits) <= BigInt(fromAssetBalance.value);
   };
 
-  return { checkBalance, fromAssetBalance };
+  return { checkBalance };
 };

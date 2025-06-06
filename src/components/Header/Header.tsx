@@ -20,38 +20,26 @@ const Header = () => {
       <img src={logo} alt="logo" className={styles.logo} />
 
       <ConnectButton.Custom>
-        {({ account, chain, openAccountModal, openConnectModal, authenticationStatus, mounted }) => {
-          const ready = mounted && authenticationStatus !== 'loading';
-          const connected = ready && account && chain && (!authenticationStatus || authenticationStatus === 'authenticated');
+        {({ account, chain, openAccountModal, openConnectModal, mounted }) => {
+          const connected = mounted && account && chain;
+
+          if (!mounted) {
+            return <div style={{ opacity: 0, pointerEvents: 'none' }} />;
+          }
 
           return (
-            <div
-              {...(!ready && {
-                'aria-hidden': true,
-                style: {
-                  opacity: 0,
-                  pointerEvents: 'none',
-                  userSelect: 'none',
-                },
-              })}
-            >
-              {(() => {
-                if (!connected) {
-                  return (
-                    <button onClick={openConnectModal} className={styles.button}>
-                      Connect Wallet
-                    </button>
-                  );
-                }
-
-                return (
-                  <button onClick={openAccountModal} className={cn(styles.button, styles.connected)}>
-                    {connector && <img src={connector.icon} alt="wallet icon" className={styles.walletIcon} />}
-                    {account.displayName}
-                    <ArrowDownIcon className={styles.arrowDownIcon} stroke="#feefcd" />
-                  </button>
-                );
-              })()}
+            <div>
+              {!connected ? (
+                <button onClick={openConnectModal} className={styles.button} aria-label="Connect wallet">
+                  Connect Wallet
+                </button>
+              ) : (
+                <button onClick={openAccountModal} className={cn(styles.button, styles.connected)} title={account.address}>
+                  {connector && <img src={connector.icon} alt={connector.name} className={styles.walletIcon} />}
+                  {account.displayName}
+                  <ArrowDownIcon className={styles.arrowDownIcon} stroke="#feefcd" />
+                </button>
+              )}
             </div>
           );
         }}

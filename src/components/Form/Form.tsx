@@ -5,6 +5,9 @@ import SwapInputSection from '../SwapInputSection/SwapInputSection';
 import { useSwapQuoteFetcher } from '@/utils/useSwapQuoteFetcher';
 import { useBalanceCheck } from '@/utils/useBalanceCheck';
 import { useAllowanceCheck } from '@/utils/useAllowanceCheck';
+import { useTokenApproval } from '@/utils/useTokenApproval';
+import { useSwapExecution } from '@/utils/useSwapExecution';
+import { getButtonText } from '@/utils/getButtonText';
 
 const Form = observer(() => {
   const {
@@ -24,39 +27,49 @@ const Form = observer(() => {
     setErrorMessage,
     inputSource,
     setInputSource,
+    isLoading,
+    setIsLoading,
+    setSwapResult,
   } = useStore();
 
-  const checkAllowance = useAllowanceCheck();
   const { checkBalance } = useBalanceCheck();
+  const { checkAllowance } = useAllowanceCheck();
+  const { approveToken } = useTokenApproval();
+  const { executeSwap } = useSwapExecution();
   const getDebouncedQuote = useSwapQuoteFetcher();
 
-  const handleActionClick = async () => {
+  const handleSwapClick = async () => {
     if (!accountAddress || !spenderAddress || !fromAsset || !fromAmount) return;
-    if (fromAsset.address.toLowerCase() === '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee') {
-      setIsApproved(true);
-      return;
-    }
-    if (!isApproved) {
-      const hasAllowance = await checkAllowance(
-        accountAddress as `0x${string}`,
-        spenderAddress as `0x${string}`,
-        fromAsset.address as `0x${string}`,
+    setIsLoading(true);
+
+    try {
+      if (fromAsset.isNative) {
+        await executeSwap(spenderAddress, fromAsset, fromAmount);
+        setSwapResult('Success');
+        return;
+      }
+
+      const hasEnoughAllowance = await checkAllowance(
+        accountAddress,
+        spenderAddress,
+        fromAsset.address,
         fromAmount,
         fromAsset.decimals,
       );
 
-      setIsApproved(hasAllowance);
+      if (!hasEnoughAllowance) {
+        await approveToken(fromAsset.address, spenderAddress, fromAmount, fromAsset.decimals);
+        setIsApproved(true);
+      }
+
+      await executeSwap(spenderAddress, fromAsset, fromAmount);
+      setSwapResult('Success');
+    } catch (error) {
+      setSwapResult('Failed');
+      setErrorMessage(error instanceof Error ? error.message : 'Transaction failed');
+    } finally {
+      setIsLoading(false);
     }
-
-    const hasAllowance = await checkAllowance(
-      accountAddress as `0x${string}`,
-      spenderAddress as `0x${string}`,
-      fromAsset.address as `0x${string}`,
-      fromAmount,
-      fromAsset.decimals,
-    );
-
-    setIsApproved(hasAllowance);
   };
 
   const handleFromAmountChange = (amount: string) => {
@@ -118,8 +131,8 @@ const Form = observer(() => {
       />
 
       {fromAmount && toAmount && !errorMessage && (
-        <button onClick={handleActionClick} className={styles.swapButton}>
-          {isApproved ? 'Swap' : 'Approve'}
+        <button onClick={handleSwapClick} disabled={isLoading} className={styles.swapButton}>
+          {getButtonText(isLoading, isApproved)}
         </button>
       )}
     </div>

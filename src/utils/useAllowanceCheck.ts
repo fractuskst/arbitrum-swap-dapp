@@ -4,21 +4,22 @@ import { erc20Abi } from 'viem';
 import { parseUnits } from 'viem/utils';
 
 export const useAllowanceCheck = () => {
-  return async (owner: `0x${string}`, spender: `0x${string}`, token: `0x${string}`, amount: string, decimals: number) => {
+  const checkAllowance = async (owner: string, spender: string, token: string, amount: string, decimals: number) => {
     try {
-      const result = await publicClient.readContract({
-        address: token,
+      const allowance = await publicClient.readContract({
+        address: token as `0x${string}`,
         abi: erc20Abi,
         functionName: 'allowance',
-        args: [owner, spender],
+        args: [owner as `0x${string}`, spender as `0x${string}`],
       });
 
       const requiredAmount = parseUnits(amount, decimals);
 
-      return result >= requiredAmount;
-    } catch (err) {
-      console.error('Error checking allowance:', err);
+      return allowance >= requiredAmount;
+    } catch (e) {
+      console.error('Error checking allowance:', e);
       return false;
     }
   };
+  return { checkAllowance };
 };

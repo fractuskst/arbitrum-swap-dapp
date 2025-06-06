@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx';
-import type { Asset, SourceType } from '../types';
+import type { Asset, SourceType, SwapResultType } from '../types';
 import { squid } from '@/configs';
 
 class Store {
@@ -14,6 +14,8 @@ class Store {
   toAmount = '';
   isApproved = false;
   errorMessage = '';
+  isLoading = false;
+  swapResult: SwapResultType | null = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -70,6 +72,14 @@ class Store {
 
   setInputSource = (value: SourceType) => {
     this.inputSource = value;
+  };
+
+  setIsLoading = (value: boolean) => {
+    this.isLoading = value;
+  };
+
+  setSwapResult = (value: SwapResultType | null) => {
+    this.swapResult = value;
   };
 }
 

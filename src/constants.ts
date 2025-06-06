@@ -10,6 +10,7 @@ export const ASSETS: Asset[] = [
     decimals: 6,
     chainId: '42161',
     icon: usdtIcon,
+    isNative: false,
   },
   {
     symbol: 'USDC',
@@ -17,6 +18,7 @@ export const ASSETS: Asset[] = [
     decimals: 6,
     chainId: '42161',
     icon: usdcIcon,
+    isNative: false,
   },
   {
     symbol: 'ETH',
@@ -24,6 +26,7 @@ export const ASSETS: Asset[] = [
     decimals: 18,
     chainId: '42161',
     icon: ethIcon,
+    isNative: true,
   },
 ];
 
